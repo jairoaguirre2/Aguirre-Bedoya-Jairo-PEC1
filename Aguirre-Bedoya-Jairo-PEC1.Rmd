@@ -4,6 +4,7 @@ author: "Jairo Aguirre"
 date: "NOV-2024"
 output: html_document
 ---
+Nuestro excel "GastricCancer_NMR" fue descargado del [repositorio de github](https://github.com/nutrimetabolomics/metaboData/). 
 
 Cargamos las libreraias necesarias para la realización de esta PEC
 
@@ -13,11 +14,32 @@ library(readxl)
 library(SummarizedExperiment)
 ```
 
-Lo primero que hacemos es leer los datos con los que trabajaremos 
+Lo primero que hacemos es leer los datos con los que trabajaremos. Nuesto excel contiene dos hojas, por lo tanto asignaremos cada hoja a un objeto. 
 
 ```{r}
-datos <- read_excel("~/MÁSTER/ANÁLISIS DATOS ÓMICOS/PEC1/GastricCancer_NMR.xlsx")
+#Hoja 1
+data <- read_excel("~/MÁSTER/ANÁLISIS DATOS ÓMICOS/PEC1/GastricCancer_NMR.xlsx", sheet = "Data")
 
+#Hoja 2 
+peak <- read_excel("~/MÁSTER/ANÁLISIS DATOS ÓMICOS/PEC1/GastricCancer_NMR.xlsx", sheet = "Peak")
 ```
 
-Para crear nuestra clase debemos separar nuestros datos de expresión (assays) y los metadatos (información fenotípica o covariables de las muestras)
+Para crear nuestra clase debemos separar nuestros datos de expresión (assays) y los metadatos (información fenotípica o covariables de las muestras). 
+
+Los datos de expresión los encontramos en la hoja 1 y se corresponden con las columnas que contienen los valores númericos (M1 - M149)
+
+```{r}
+assay_data <- as.matrix(data[, grep("^M", names(data))])
+```
+
+Los metadatos de las muestras los encontramos en la hoja 2 que hemos denominado peak
+
+Ahora procedemos a crear nuestar clase SummarizedExperiment
+
+```{r}
+se <- SummarizedExperiment(assays = list(counts = assay_data), 
+                           colData = peak)
+
+se
+```
+

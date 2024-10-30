@@ -356,6 +356,8 @@ display: none;
 </div>
 
 
+<p>Nuestro excel “GastricCancer_NMR” fue descargado del <a href="https://github.com/nutrimetabolomics/metaboData/">repositorio de
+github</a>.</p>
 <p>Cargamos las libreraias necesarias para la realización de esta
 PEC</p>
 <pre class="r"><code>library(readxl)</code></pre>
@@ -432,11 +434,35 @@ PEC</p>
 <pre><code>## The following objects are masked from &#39;package:matrixStats&#39;:
 ## 
 ##     anyMissing, rowMedians</code></pre>
-<p>Lo primero que hacemos es leer los datos con los que trabajaremos</p>
-<pre class="r"><code>datos &lt;- read_excel(&quot;~/MÁSTER/ANÁLISIS DATOS ÓMICOS/PEC1/GastricCancer_NMR.xlsx&quot;)</code></pre>
+<p>Lo primero que hacemos es leer los datos con los que trabajaremos.
+Nuesto excel contiene dos hojas, por lo tanto asignaremos cada hoja a un
+objeto.</p>
+<pre class="r"><code>#Hoja 1
+data &lt;- read_excel(&quot;~/MÁSTER/ANÁLISIS DATOS ÓMICOS/PEC1/GastricCancer_NMR.xlsx&quot;, sheet = &quot;Data&quot;)
+
+#Hoja 2 
+peak &lt;- read_excel(&quot;~/MÁSTER/ANÁLISIS DATOS ÓMICOS/PEC1/GastricCancer_NMR.xlsx&quot;, sheet = &quot;Peak&quot;)</code></pre>
 <p>Para crear nuestra clase debemos separar nuestros datos de expresión
 (assays) y los metadatos (información fenotípica o covariables de las
-muestras)</p>
+muestras).</p>
+<p>Los datos de expresión los encontramos en la hoja 1 y se corresponden
+con las columnas que contienen los valores númericos (M1 - M149)</p>
+<pre class="r"><code>assay_data &lt;- as.matrix(data[, grep(&quot;^M&quot;, names(data))])</code></pre>
+<p>Los metadatos de las muestras los encontramos en la hoja 2 que hemos
+denominado peak</p>
+<p>Ahora procedemos a crear nuestar clase SummarizedExperiment</p>
+<pre class="r"><code>se &lt;- SummarizedExperiment(assays = list(counts = assay_data), 
+                           colData = peak)
+
+se</code></pre>
+<pre><code>## class: SummarizedExperiment 
+## dim: 140 149 
+## metadata(0):
+## assays(1): counts
+## rownames: NULL
+## rowData names(0):
+## colnames(149): M1 M2 ... M148 M149
+## colData names(5): Idx Name Label Perc_missing QC_RSD</code></pre>
 
 
 
