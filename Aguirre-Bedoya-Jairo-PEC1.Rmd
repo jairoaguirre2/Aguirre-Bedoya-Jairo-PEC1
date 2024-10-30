@@ -6,7 +6,7 @@ output: html_document
 ---
 Nuestro excel "GastricCancer_NMR" fue descargado del [repositorio de github](https://github.com/nutrimetabolomics/metaboData/). 
 
-Cargamos las libreraias necesarias para la realización de esta PEC
+Cargamos las librerías necesarias para la realización de esta PEC
 
 ```{r}
 
