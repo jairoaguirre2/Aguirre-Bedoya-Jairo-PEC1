@@ -1,0 +1,23 @@
+---
+title: "PEC1"
+author: "Jairo Aguirre"
+date: "NOV-2024"
+output: html_document
+---
+
+Cargamos las libreraias necesarias para la realización de esta PEC
+
+```{r}
+
+library(readxl)
+library(SummarizedExperiment)
+```
+
+Lo primero que hacemos es leer los datos con los que trabajaremos 
+
+```{r}
+datos <- read_excel("~/MÁSTER/ANÁLISIS DATOS ÓMICOS/PEC1/GastricCancer_NMR.xlsx")
+
+```
+
+Para crear nuestra clase debemos separar nuestros datos de expresión (assays) y los metadatos (información fenotípica o covariables de las muestras)
