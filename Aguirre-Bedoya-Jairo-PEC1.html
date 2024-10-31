@@ -451,17 +451,27 @@ con las columnas que contienen los valores númericos (M1 - M149)</p>
 denominado peak</p>
 <p>Ahora procedemos a crear nuestar clase SummarizedExperiment</p>
 <pre class="r"><code>se &lt;- SummarizedExperiment(assays = list(counts = assay_data), 
-                           colData = peak)
-
+                           colData = peak)</code></pre>
+<p>Con rowData vamos a añadir caracteristicas de cada muestra</p>
+<pre class="r"><code>row_data &lt;- data[, c(&quot;Idx&quot;, &quot;SampleID&quot;, &quot;SampleType&quot;, &quot;Class&quot;)]</code></pre>
+<p>Vamos a visualizar las características de nuestro objeto</p>
+<pre class="r"><code>se &lt;- SummarizedExperiment(assays = list(counts = assay_data), 
+                             rowData = row_data,
+                             colData = peak)
 se</code></pre>
 <pre><code>## class: SummarizedExperiment 
 ## dim: 140 149 
 ## metadata(0):
 ## assays(1): counts
 ## rownames: NULL
-## rowData names(0):
+## rowData names(4): Idx SampleID SampleType Class
 ## colnames(149): M1 M2 ... M148 M149
 ## colData names(5): Idx Name Label Perc_missing QC_RSD</code></pre>
+<p>Podemos observar que nuestra clase tiene unas dimensiones de 140
+filas y 149 columnas, donde las filas representan las distintas muestras
+y las columnas los metabolitos.</p>
+<p>Vamos a explorar más a fondo los distintos componentes de nuestro
+SummarizedExperiment</p>
 
 
 

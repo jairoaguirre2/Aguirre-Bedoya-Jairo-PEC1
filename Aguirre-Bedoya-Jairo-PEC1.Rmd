@@ -39,7 +39,23 @@ Ahora procedemos a crear nuestar clase SummarizedExperiment
 ```{r}
 se <- SummarizedExperiment(assays = list(counts = assay_data), 
                            colData = peak)
+```
 
+Con rowData vamos a añadir caracteristicas de cada muestra 
+
+```{r}
+row_data <- data[, c("Idx", "SampleID", "SampleType", "Class")]
+```
+
+Vamos a visualizar las características de nuestro objeto 
+```{r}
+se <- SummarizedExperiment(assays = list(counts = assay_data), 
+                             rowData = row_data,
+                             colData = peak)
 se
 ```
+
+Podemos observar que nuestra clase tiene unas dimensiones de 140 filas y 149 columnas, donde las filas representan las distintas muestras y las columnas los metabolitos. 
+
+Vamos a explorar más a fondo los distintos componentes de nuestro SummarizedExperiment
 
