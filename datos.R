@@ -23,3 +23,8 @@ hist(peak$Perc_missing, main="Distribución de Datos Faltantes",
 boxplot(peak$QC_RSD, main="Distribución de QC_RSD", 
         ylab="RSD (%)", col="violet")
 save(se, file = "dataset_metabolomica.Rda")
+# Exportar matriz de datos, metadatos e información de las variables 
+write.csv(assay(se), file = "assay_data.csv", row.names = TRUE)
+write.csv(colData(se), file = "colData.csv", row.names = TRUE)
+write.csv(rowData(se), file = "rowData.csv", row.names = TRUE)
+
