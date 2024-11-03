@@ -13,3 +13,10 @@ se <- SummarizedExperiment(assays = list(counts = assay_data),
 
 se
 class(colData(se))
+head(colData(se))
+summary(colData(se))
+class(assay(se))
+head(assay(se))
+head(rowData(se))
+colData(se)[1, ]
+colData(se)[6, ]
