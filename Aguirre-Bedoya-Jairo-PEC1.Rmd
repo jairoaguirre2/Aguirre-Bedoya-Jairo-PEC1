@@ -2,9 +2,30 @@
 title: "PEC1"
 author: "Jairo Aguirre"
 date: "NOV-2024"
-output: html_document
+output:
+  html_document: default
 ---
-Nuestro excel "GastricCancer_NMR" fue descargado del [repositorio de github](https://github.com/nutrimetabolomics/metaboData/). 
+## 1. Resumen
+
+En esta prueba de evaluación continua hemos creado un contenedor del tipo SummarizedExperiment que contiene datos y metadatos de un dataset que ha sido descargado del repositoriodel [repositorio de github](https://github.com/nutrimetabolomics/metaboData/). Se ha llevado a cabo una exploración del dataset, proporcionando una visión general sobre cómo trabajar con este tipo de clases en R.
+
+El proceso para explorar los datos fue el siguiente:
+
+1.	Descargar los datos del repositorio GitHub
+2.	Crear nuestro SummarizedExperiment 
+3.	Explorar el objeto (se) para entender su estructura y contenido
+4.	Visualizar y explicar algunos de los resultados observados 
+
+## 2. Objetivos
+
+El objetivo principal de esta actividad es consolidar los conocimientos y competencias adquiridos sobre los diferentes tipos de herramientas y su manejo bioinformático con herramientas como Galaxy o Bioconductor, a través del estudio de un SummarizedExperiment creado a partir de un dataset. 
+
+Adicionalmente, se evaluará la calidad de los datos utilizando las métricas Perc_missing y QC_RSD, las cuales se explican más adelante.  
+
+## 3. Preparación del sistema
+
+#### 3.1 Instalación y carga de paquetes 
+
 
 Cargamos las librerías necesarias para la realización de esta PEC
 
@@ -13,6 +34,9 @@ Cargamos las librerías necesarias para la realización de esta PEC
 library(readxl)
 library(SummarizedExperiment)
 ```
+
+
+### 3.2 Preparar los componentes de nuestra clase 
 
 Lo primero que hacemos es leer los datos con los que trabajaremos. Nuesto excel contiene dos hojas, por lo tanto asignaremos cada hoja a un objeto. 
 
@@ -32,9 +56,11 @@ Los datos de expresión los encontramos en la hoja 1 y se corresponden con las c
 assay_data <- as.matrix(data[, grep("^M", names(data))])
 ```
 
-Los metadatos de las muestras los encontramos en la hoja 2 que hemos denominado peak
+Los metadatos de las muestras los encontramos en la hoja 2 que hemos denominado peak.
 
-Ahora procedemos a crear nuestar clase SummarizedExperiment
+### 3.3 Creación de nuestra clase 
+
+Ahora procedemos a crear nuestra clase SummarizedExperiment
 
 ```{r}
 se <- SummarizedExperiment(assays = list(counts = assay_data), 
@@ -48,6 +74,7 @@ row_data <- data[, c("Idx", "SampleID", "SampleType", "Class")]
 ```
 
 Vamos a visualizar las características de nuestro objeto 
+
 ```{r}
 se <- SummarizedExperiment(assays = list(counts = assay_data), 
                              rowData = row_data,
@@ -57,5 +84,93 @@ se
 
 Podemos observar que nuestra clase tiene unas dimensiones de 140 filas y 149 columnas, donde las filas representan las distintas muestras y las columnas los metabolitos. 
 
-Vamos a explorar más a fondo los distintos componentes de nuestro SummarizedExperiment
+## 4 Exploración del SummarizedExperiment
 
+Cuando ejecutamos class(colData(se)) obtenemos la clase del elemento colData en el objeto SummarizedExperiment (se).
+
+```{r}
+class(colData(se))
+```
+
+DFrame es el tipo de clase de colData(se).
+DFrame es una estructura de datos específica del paquete S4Vectors en R, que se usa comúnmente en objetos SummarizedExperiment para almacenar metadatos asociados con muestras (Roland, 2013)
+
+Podemos observar las primeras filas de nuestro colData 
+
+```{r}
+head(colData(se))
+```
+
+Cada fila representa un metabolito diferente identificado en las muestras, y las columnas contienen metadatos asociados:
+
+- Idx: Es un identificador numérico único para cada metabolito.
+- Name: Se corresponde con el nombre del metabolito que se está midiendo en el análisis.
+- Label: Este campo proporciona una descripción adicional del metabolito.
+- Perc_missing: Indica el porcentaje de datos faltantes para ese metabolito en todas las muestras. Es decir, en que porcentaje no están presentes o no se detectaron el metabolito en las muestras totales.
+- QC_RSD: Representa el control de calidad, a mayor porcentaj más variablidad lo que podría indicar probelams de detección o cuantificación. 
+
+
+Con el comando head(assay()) observamos las primeras filas de nuestro assay, es decir, nuestra matriz de datos con los valores observados en cada muestra (columnas) por cada metabolito (filas). 
+
+
+```{r}
+head(assay(se))
+```
+
+Cada celda en esta matriz contiene el valor cuantificado de un metabolito específico en una muestra particular.
+
+Al ejecutar head(rowData()) observaremos las primeras filas de una matriz que nos ofrece información descriptiva específica sobre las muestras. 
+
+```{r}
+head(rowData(se))
+```
+
+
+Idx: Es una columna numérica que indica un identificador para cada muestra.
+SampleID: Código único que identifica cada muestra. 
+SampleType: Clasificación del tipo de muestra. "QC" (Quality Control, usadas para verificar la precisión y reproducibilidad del análisis) o "Sample" (muestras experimentales del estudio).
+Class: Grupo o categoría de cada muestra dentro del experimento. 
+
+## 5.Resultados
+
+Una vez tenemos clara esta información, podríamos inferir:
+
+```{r}
+colData(se)[1, ]
+```
+
+Por ejemplo, el valor de 11.428571 en la primera fila significa que aproximadamente el 11.43% de las mediciones para "1_3-Dimethylurate" no están presentes o no se detectaron.
+
+```{r}
+colData(se)[6, ]
+```
+
+El metabolito "2-Aminobutyrate" presenta un valor de QC_RSD de 46.9771 lo que podría indicar mayor variabilidad y posibles problemas en la detección o cuantificación.
+
+
+```{r}
+hist(peak$Perc_missing, main="Distribución de Datos Faltantes", xlab="Porcentaje de Datos Faltantes", ylab="Frecuencia", col="pink")
+```
+
+Un alto porcentaje de datos faltantes puede indicar problemas en el proceso de adquisición de datos.
+
+```{r}
+boxplot(peak$QC_RSD, main="Distribución de QC_RSD", ylab="RSD (%)", col="violet")
+```
+
+Un valor alto de QC_RSD puede sugerir inconsistencias en la cuantificación de los metabolitos.
+
+## 6. Discusión 
+
+En esta actividad, se ha creado un contenedor SummarizedExperiment que permite integrar datos y metadatos obtenidos de un análisis de metabolómica. La exploración realizada ha proporcionado una visión clara sobre la estructura de los datos y ha facilitado identificación relevante de patrones en los metabolitos analizados.
+
+La interpretación biológica de estos resultados puede ser compleja. Los metabolitos pueden estar influenciados por múltiples factores, como la dieta, el estilo de vida y condiciones ambientales, lo que complica su análisis. Hay que tener en cuenta n tamaño de muestra insuficiente puede limitar la capacidad de generalizar los resultados y afectar la validez estadística de las conclusiones (Sigma-Aldrich, n.d).
+
+Esta actividad demuestra la utilidad de los objetos SummarizedExperiment para manejar datos de metabolómica de manera eficiente. La integración de datos y metadatos en un único objeto facilita la interpretación y el análisis posterior.
+
+
+## 7. Referencias
+
+Roland (2013). What is the practical difference between data.frame and data.table in R? Stack Overflow. Retrieved from https://stackoverflow.com/questions/18001120/what-is-the-practical-difference-between-data-frame-and-data-table-in-r
+
+Sigma-Aldrich. (n.d.). Metabolomics research. Sigma-Aldrich. https://www.sigmaaldrich.com/ES/es/applications/research-disease-areas/metabolomics-research?srsltid=AfmBOopAGXHGMoMymGHUDLDu2Qw7GCmsGVKyqa_ejkC-PlTFBLXMiKSG
