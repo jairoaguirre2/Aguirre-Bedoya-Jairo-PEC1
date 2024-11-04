@@ -2,12 +2,14 @@
 title: "Informe"
 author: "Jairo Aguirre"
 date: "Noviembre - 2024"
-output: word_document
+output:
+  word_document: default
+toc: true
 ---
 
 ## 1. Resumen
 
-En esta prueba de evaluación continua hemos creado un contenedor del tipo SummarizedExperiment que contiene datos y metadatos de un dataset que ha sido descargado del repositoriodel [repositorio de github](https://github.com/nutrimetabolomics/metaboData/). Se ha llevado a cabo una exploración del dataset, proporcionando una visión general sobre cómo trabajar con este tipo de clases en R.
+En esta prueba de evaluación continua hemos creado un contenedor del tipo SummarizedExperiment que contiene datos y metadatos de un dataset que ha sido descargado del repositorio del [repositorio de GitHub](https://github.com/nutrimetabolomics/metaboData/tree/main/Datasets/2023-CIMCBTutorial). Se ha llevado a cabo una exploración del dataset, proporcionando una visión general sobre cómo trabajar con este tipo de clases en R.
 
 El proceso para explorar los datos fue el siguiente:
 
@@ -24,7 +26,7 @@ Adicionalmente, se evaluará la calidad de los datos utilizando las métricas Pe
 
 ## 3. Preparación del sistema
 
-#### 3.1 Instalación y carga de paquetes 
+### 3.1 Instalación y carga de paquetes 
 
 Se deben cargar las librerías necesarias para la realización de esta PEC
 
@@ -44,13 +46,15 @@ Ahora procedemos a crear nuestra clase SummarizedExperiment
 
 Con rowData vamos a añadir caracteristicas de cada muestra 
 
-# 4 Exploración del SummarizedExperiment
+## 4 Exploración del SummarizedExperiment
 
 Cuando ejecutamos class(colData(se)) obtenemos la clase del elemento colData en el objeto SummarizedExperiment (se)
 
 Podemos observar las primeras filas de nuestro colData con head(colData(se))
 
 Con el comando head(assay()) observamos las primeras filas de nuestro assay, es decir, nuestra matriz de datos con los valores observados en cada muestra (columnas) por cada metabolito (filas).
+
+Al ejecutar head(rowData()) observaremos las primeras filas de una matriz que nos ofrece información descriptiva específica sobre las muestras.
 
 ## 5.Resultados
 
@@ -75,3 +79,9 @@ Esta actividad demuestra la utilidad de los objetos SummarizedExperiment para ma
 Roland (2013). What is the practical difference between data.frame and data.table in R? Stack Overflow. Retrieved from https://stackoverflow.com/questions/18001120/what-is-the-practical-difference-between-data-frame-and-data-table-in-r
 
 Sigma-Aldrich. (n.d.). Metabolomics research. Sigma-Aldrich. https://www.sigmaaldrich.com/ES/es/applications/research-disease-areas/metabolomics-research?srsltid=AfmBOopAGXHGMoMymGHUDLDu2Qw7GCmsGVKyqa_ejkC-PlTFBLXMiKSG
+
+## 8. Link GitHub
+
+[Link](https://github.com/jairoaguirre2/Aguirre-Bedoya-Jairo-PEC1)
+
+

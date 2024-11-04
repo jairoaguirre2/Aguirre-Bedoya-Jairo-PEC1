@@ -7,7 +7,7 @@ output:
 ---
 ## 1. Resumen
 
-En esta prueba de evaluación continua hemos creado un contenedor del tipo SummarizedExperiment que contiene datos y metadatos de un dataset que ha sido descargado del repositoriodel [repositorio de github](https://github.com/nutrimetabolomics/metaboData/). Se ha llevado a cabo una exploración del dataset, proporcionando una visión general sobre cómo trabajar con este tipo de clases en R.
+En esta prueba de evaluación continua hemos creado un contenedor del tipo SummarizedExperiment que contiene datos y metadatos de un dataset que ha sido descargado del repositoriodel [repositorio de github](https://github.com/nutrimetabolomics/metaboData/tree/main/Datasets/2023-CIMCBTutorial). Se ha llevado a cabo una exploración del dataset, proporcionando una visión general sobre cómo trabajar con este tipo de clases en R.
 
 El proceso para explorar los datos fue el siguiente:
 
@@ -126,10 +126,10 @@ head(rowData(se))
 ```
 
 
-Idx: Es una columna numérica que indica un identificador para cada muestra.
-SampleID: Código único que identifica cada muestra. 
-SampleType: Clasificación del tipo de muestra. "QC" (Quality Control, usadas para verificar la precisión y reproducibilidad del análisis) o "Sample" (muestras experimentales del estudio).
-Class: Grupo o categoría de cada muestra dentro del experimento. 
+- Idx: Es una columna numérica que indica un identificador para cada muestra.
+- SampleID: Código único que identifica cada muestra. 
+- SampleType: Clasificación del tipo de muestra. "QC" (Quality Control, usadas para verificar la precisión y reproducibilidad del análisis) o "Sample" (muestras experimentales del estudio).
+- Class: Grupo o categoría de cada muestra dentro del experimento. 
 
 ## 5.Resultados
 
@@ -160,6 +160,11 @@ boxplot(peak$QC_RSD, main="Distribución de QC_RSD", ylab="RSD (%)", col="violet
 
 Un valor alto de QC_RSD puede sugerir inconsistencias en la cuantificación de los metabolitos.
 
+Para este conjunto de datos, los investigadores calcularon estadísticas básicas y se almecenaron en la tabla de picos (peak-hoja 2), Los investigadores solo aceptaron los metabolitos que cumplían:
+
+- una desviación estándar de control de calidad (QC-RSD) inferior al 20 %
+- que el valor de datos faltantes fuesen menor del 10
+
 ## 6. Discusión 
 
 En esta actividad, se ha creado un contenedor SummarizedExperiment que permite integrar datos y metadatos obtenidos de un análisis de metabolómica. La exploración realizada ha proporcionado una visión clara sobre la estructura de los datos y ha facilitado identificación relevante de patrones en los metabolitos analizados.
@@ -174,3 +179,7 @@ Esta actividad demuestra la utilidad de los objetos SummarizedExperiment para ma
 Roland (2013). What is the practical difference between data.frame and data.table in R? Stack Overflow. Retrieved from https://stackoverflow.com/questions/18001120/what-is-the-practical-difference-between-data-frame-and-data-table-in-r
 
 Sigma-Aldrich. (n.d.). Metabolomics research. Sigma-Aldrich. https://www.sigmaaldrich.com/ES/es/applications/research-disease-areas/metabolomics-research?srsltid=AfmBOopAGXHGMoMymGHUDLDu2Qw7GCmsGVKyqa_ejkC-PlTFBLXMiKSG
+
+## 8. Link GitHub
+
+[Link](https://github.com/jairoaguirre2/Aguirre-Bedoya-Jairo-PEC1)
